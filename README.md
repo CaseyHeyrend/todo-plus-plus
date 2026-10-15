@@ -1,10 +1,10 @@
 # Overview
 
-I made a ToDo task manager in C++. 
+I made a ToDo task manager in C++. The program allows users to add tasks, view their task list, and remove tasks they no longer need. It also saves tasks to a CSV file so they can be loaded again when the program is reopened.
 
-- Provide a description of the software that you wrote to demonstrate the C++ language.
+My purpose for writing this software was to learn more about C++ and practice using the language to create a working program. C++ seemed difficult to me at first, so I wanted to choose a project that would help me learn one step at a time. 
 
-- Describe your purpose for writing this software.
+To Active: clang++ -std=c++17 main.cpp -o todo and then ./todo in the terminal
 
 
 [Software Demo Video]()
@@ -17,11 +17,11 @@ I made a ToDo task manager in C++.
 
 # Useful Websites
 
-- [Web Site Name](http://url.link.goes.here)
-- [Web Site Name](http://url.link.goes.here)
+- [W3Schools – C++ Tutorial](https://www.w3schools.com/cpp/)
+- [Microsoft Learn – C++ Documentation](https://learn.microsoft.com/en-us/cpp/cpp/?view=msvc-170)
 
 # Future Work
 
-- Item 1
-- Item 2
-- Item 3
+- Add a feature to mark tasks as completed.
+- Add a search feature to find tasks by name.
+- Improve input validation so the program handles invalid entries more clearly.

@@ -15,6 +15,45 @@ void displayMenu()
     cout << "4. Exit\n";
     cout << "Enter your option: ";
 }
+// Save tasks to a file
+void saveTasks(const vector<string>& tasks)
+{
+    ofstream file("tasks.csv");
+    
+    
+    if (!file)
+    {
+        cout << "Unable to save tasks. Try again.\n";
+        return;
+    }
+    file << "Task\n"; // Write header
+    for (const string& task : tasks)
+    {
+        file << task << '\n';
+    }
+    file.close();
+}
+// Load tasks from a file
+void loadTasks(vector<string>& tasks)
+{
+    ifstream file("tasks.csv");
+    string task;
+
+    if (!file)
+    {
+        return; // No tasks to load
+    }
+    getline(file, task); // Skip header
+    while (getline(file, task))
+    {
+        if (!task.empty())
+        {
+            tasks.push_back(task);
+        }
+    }
+    file.close();
+}
+// Function to add a task
 void addTask(vector<string>& tasks)
 {
     string task;
@@ -29,8 +68,10 @@ void addTask(vector<string>& tasks)
     }
         
     tasks.push_back(task);
+    saveTasks(tasks);
     cout << "Task added!\n";
 }
+
 // Display all tasks
 void viewTasks(const vector<string>& tasks)
 {
@@ -45,6 +86,7 @@ void viewTasks(const vector<string>& tasks)
         cout << i + 1 << ". " << tasks[i] << '\n';
     }
 }
+
 // Remove a task by its number
 void removeTask(vector<string>& tasks)
 {
@@ -72,12 +114,14 @@ void removeTask(vector<string>& tasks)
         return;
     }
     tasks.erase(tasks.begin() + taskNumber - 1);
+    saveTasks(tasks);
     cout << "Task removed!\n";
 }
 
 int main()
 {
     vector<string> tasks;
+    loadTasks(tasks); // Load existing tasks from file
     int choice = 0;
 
     do
