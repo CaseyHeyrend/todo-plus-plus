@@ -20,7 +20,6 @@ void saveTasks(const vector<string>& tasks)
 {
     ofstream file("tasks.csv");
     
-    
     if (!file)
     {
         cout << "Unable to save tasks. Try again.\n";
@@ -33,6 +32,7 @@ void saveTasks(const vector<string>& tasks)
     }
     file.close();
 }
+
 // Load tasks from a file
 void loadTasks(vector<string>& tasks)
 {
@@ -53,6 +53,7 @@ void loadTasks(vector<string>& tasks)
     }
     file.close();
 }
+
 // Function to add a task
 void addTask(vector<string>& tasks)
 {
