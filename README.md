@@ -28,6 +28,6 @@ Then run it using:
 
 # Future Work
 
-- Add a feature to mark tasks as completed.
-- Add a search feature to find tasks by name.
 - Improve input validation so the program handles invalid entries more clearly.
+- Add a way to edit existing tasks.
+- Improve the search feature so it can find tasks regardless of uppercase or lowercase letters.
