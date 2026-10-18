@@ -2,6 +2,7 @@
 #include <vector>
 #include <string>
 #include <fstream>
+#include "Task.h"
 
 using namespace std;
 
@@ -12,11 +13,13 @@ void displayMenu()
     cout << "1. Add Task\n";
     cout << "2. View Tasks\n";
     cout << "3. Remove Task\n";
-    cout << "4. Exit\n";
+    cout << "4. Complete Task\n";
+    cout << "5. Search Tasks\n";
+    cout << "6. Exit\n";
     cout << "Enter your option: ";
 }
 // Save tasks to a file
-void saveTasks(const vector<string>& tasks)
+void saveTasks(const vector<Task>& tasks)
 {
     ofstream file("tasks.csv");
     
@@ -26,36 +29,43 @@ void saveTasks(const vector<string>& tasks)
         return;
     }
     file << "Task\n"; // Write header
-    for (const string& task : tasks)
+    for (const Task& task : tasks)
     {
-        file << task << '\n';
+        file << task.getName() << "," << task.isCompleted() << '\n';
     }
     file.close();
 }
 
 // Load tasks from a file
-void loadTasks(vector<string>& tasks)
+void loadTasks(vector<Task>& tasks)
 {
     ifstream file("tasks.csv");
-    string task;
 
     if (!file)
     {
         return; // No tasks to load
     }
-    getline(file, task); // Skip header
-    while (getline(file, task))
+    string taskName;
+    string completed;
+
+    getline(file, taskName);
+
+    while (getline(file, taskName, ',') && getline(file, completed))
     {
-        if (!task.empty())
+        Task task(taskName);
+
+        if (completed == "1")
         {
-            tasks.push_back(task);
+            task.complete();
         }
+
+        tasks.push_back(task);
     }
     file.close();
 }
 
 // Function to add a task
-void addTask(vector<string>& tasks)
+void addTask(vector<Task>& tasks)
 {
     string task;
         
@@ -68,13 +78,13 @@ void addTask(vector<string>& tasks)
         return;
     }
         
-    tasks.push_back(task);
+    tasks.push_back(Task(task));
     saveTasks(tasks);
     cout << "Task added!\n";
 }
 
 // Display all tasks
-void viewTasks(const vector<string>& tasks)
+void viewTasks(const vector<Task>& tasks)
 {
     if (tasks.empty())
     {
@@ -84,12 +94,69 @@ void viewTasks(const vector<string>& tasks)
     cout << "\nYour Tasks:\n";
     for (int i = 0; i < static_cast<int>(tasks.size()); i++)
     {
-        cout << i + 1 << ". " << tasks[i] << '\n';
+        cout << i + 1 << ". " << tasks[i].getName();
+
+    if (tasks[i].isCompleted())
+    {
+        cout << " [Completed]";
     }
+
+    cout << '\n';
+    }
+}
+// Mark a task as completed
+void completeTask(vector<Task>& tasks)
+{
+    if (tasks.empty())
+    {
+        cout << "You have no tasks to complete.\n";
+        return;
+    }
+
+    viewTasks(tasks);
+
+    int taskNumber;
+    cout << "Enter the task number to complete: ";
+
+    cin >> taskNumber;
+    cin.ignore(10000, '\n');
+
+    if (taskNumber < 1 || taskNumber > static_cast<int>(tasks.size()))
+    {
+        cout << "Invalid task number.\n";
+        return;
+    }
+
+    tasks[taskNumber - 1].complete();
+
+    cout << "Task marked as completed!\n";
+}
+// Search for tasks by keyword
+void searchTasks(const vector<Task>& tasks)
+{
+    string search;
+    cout << "Enter a word to search for: ";
+    getline(cin, search);
+
+    bool found = false;
+
+    for (int i = 0; i < static_cast<int>(tasks.size()); i++)
+    {
+        if (tasks[i].getName().find(search) != string::npos)
+        {
+            cout << i + 1 << ". " << tasks[i].getName() << '\n';
+            found = true;
+        }
+    }
+
+    if (!found)
+    {
+        cout << "No tasks found.\n";
+    } 
 }
 
 // Remove a task by its number
-void removeTask(vector<string>& tasks)
+void removeTask(vector<Task>& tasks)
 {
     if (tasks.empty())
     {
@@ -121,7 +188,7 @@ void removeTask(vector<string>& tasks)
 
 int main()
 {
-    vector<string> tasks;
+    vector<Task> tasks;
     loadTasks(tasks); // Load existing tasks from file
     int choice = 0;
 
@@ -153,6 +220,15 @@ int main()
         }
         else if (choice == 4)
         {
+            completeTask(tasks);
+        
+        }
+        else if (choice == 5)
+        {
+            searchTasks(tasks);
+        }
+        else if (choice == 6)
+        {
             cout << "Thanks for using ToDo++!\n";
         }
         else
@@ -160,7 +236,7 @@ int main()
             cout << "Invalid option. Please try again.\n";
         }
 
-    } while (choice != 4);
+    } while (choice != 6);
 
     return 0;
 }
