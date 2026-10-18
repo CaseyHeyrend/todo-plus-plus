@@ -1,6 +1,7 @@
 # Overview
 
-I made a To-Do task manager in C++. The program allows users to add tasks, view their task list, and remove tasks they no longer need. It also saves tasks to a CSV file so users can reload them when they reopen the program.
+I made a To-Do task manager in C++. The program lets users add tasks, view their task list, remove tasks they no longer need, mark tasks as complete, and search for specific tasks. It also saves tasks and their completion status to a CSV file so users can load them again when they reopen the program.
+
 
 I wrote this software to learn more about C++ and practice building a working program. C++ seemed difficult at first, so I chose a project that would help me learn one step at a time. 
 
